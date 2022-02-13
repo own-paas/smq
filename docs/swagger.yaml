@@ -1,0 +1,538 @@
+definitions:
+  model.Acl:
+    properties:
+      action:
+        type: string
+      classify:
+        type: string
+      create_at:
+        type: integer
+      id:
+        type: string
+      priority:
+        type: integer
+      topic:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+    type: object
+  model.Bridge:
+    properties:
+      queue:
+        type: string
+      topic:
+        type: string
+    type: object
+  model.LoginForm:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.User:
+    properties:
+      client_id:
+        type: string
+      create_at:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/acl/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data": []}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 授权列表
+      tags:
+      - 授权管理
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 传入参数是struct,classify:pub|sub,type:ip|clientid|username,action:allow|deny
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.Acl'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加授权
+      tags:
+      - 授权管理
+  /api/v1/acl/{id}/:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 授权id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除授权
+      tags:
+      - 授权管理
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 授权id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 查看授权
+      tags:
+      - 授权管理
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 授权id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 传入参数是struct
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.Acl'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改授权
+      tags:
+      - 授权管理
+  /api/v1/bridge/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data": []}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 桥接列表
+      tags:
+      - 桥接管理
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 传入参数是map
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.Bridge'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加桥接
+      tags:
+      - 桥接管理
+  /api/v1/bridge/{topic}/:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 桥接topic
+        in: path
+        name: topic
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除桥接
+      tags:
+      - 桥接管理
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 桥接topic
+        in: path
+        name: topic
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 查看桥接
+      tags:
+      - 桥接管理
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 桥接topic
+        in: path
+        name: topic
+        required: true
+        type: string
+      - description: 传入参数是map
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.Bridge'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改交接
+      tags:
+      - 桥接管理
+  /api/v1/change_password/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 传入参数是struct
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{"token": ""}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改密码
+      tags:
+      - 用户管理
+  /api/v1/client/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data": []}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 客户端列表
+      tags:
+      - 客户端管理
+  /api/v1/client/{id}/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 客户端id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 查看客户端
+      tags:
+      - 客户端管理
+  /api/v1/login/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 传入参数是struct
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{"token": ""}}'
+          schema:
+            type: object
+      summary: 登录
+      tags:
+      - 认证登陆
+  /api/v1/node/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data": []}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 节点列表
+      tags:
+      - 节点管理
+  /api/v1/node/{id}/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 节点id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 查看节点
+      tags:
+      - 节点管理
+  /api/v1/subscription/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data": []}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 订阅列表
+      tags:
+      - 订阅管理
+  /api/v1/subscription/{id}/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 订阅id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 查看订阅
+      tags:
+      - 订阅管理
+  /api/v1/user/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data": []}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 用户列表
+      tags:
+      - 用户管理
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 传入参数是struct
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加用户
+      tags:
+      - 用户管理
+  /api/v1/user/{name}/:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除用户
+      tags:
+      - 用户管理
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "data":{}}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 查看用户
+      tags:
+      - 用户管理
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户名
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 传入参数是struct
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 0, "message": "操作成功！"}'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改用户
+      tags:
+      - 用户管理
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-token
+    type: apiKey
+swagger: "2.0"

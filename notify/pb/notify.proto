@@ -1,0 +1,31 @@
+// 这个就是protobuf的中间文件
+// 指定的当前proto语法的版本，有2和3
+syntax = "proto3";
+
+// 指定等会文件生成出来的package
+option go_package="/pb";
+
+import "google/protobuf/any.proto";
+
+package pb;
+
+// 定义request
+message NotifyRequest{
+  google.protobuf.Any data = 1; // 1代表顺序
+}
+
+// 定义response
+message NotifyResponse{
+  bool status = 1; // 1代表顺序
+}
+
+// 定义服务主体
+service Notify{
+  // 定义方法
+  rpc OnClientConnect(NotifyRequest) returns(NotifyResponse);
+  rpc OnClientDisconnected(NotifyRequest) returns(NotifyResponse);
+  rpc OnSubscribe(NotifyRequest) returns(NotifyResponse);
+  rpc OnUnSubscribe(NotifyRequest) returns(NotifyResponse);
+  rpc OnAgentConnect(NotifyRequest) returns(NotifyResponse);
+  rpc OnAgentDisconnected(NotifyRequest) returns(NotifyResponse);
+}
